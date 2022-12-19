@@ -1,18 +1,15 @@
 import React,{Component} from "react";
+import NavHeader from "./components/NavHeader";
 import {Home} from "./Home";
 import './style.css';
 
 class App extends Component {
+  
   render() {
     return (<div className="App">
-      <header className="App-header">
-        <p>
-          Hello Widget!!!
-          <Home/>
-        </p>
-        
-      </header>
-    </div>
+                <NavHeader isApprover={this.props.isApprover}/>
+                <Home isApprover={this.props.isApprover}/>        
+            </div>
   );}
 }
 

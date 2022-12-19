@@ -3,7 +3,9 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 import {
-    UPDATE_CREATE_WIDGET_MODAL
+    UPDATE_CREATE_WIDGET_MODAL,
+    FETCH_WIDGETS,
+    UPDATE_LOADER
 } from '../actions/actionTypes';
 
 
@@ -14,7 +16,19 @@ const rootReducer = (state = initialState, action) => {
         case UPDATE_CREATE_WIDGET_MODAL:
             return {
                 ...state,
-                addWidgetModal: action.addWidgetModal
+                addWidgetModal: action.addWidgetModal,
+                editWidgetModal: action.editWidgetModal
+            };
+        case UPDATE_LOADER:
+            return {
+                ...state,
+                loading: action.loading
+            };
+        case FETCH_WIDGETS:
+            return {
+                ...state,
+                loading: action.loading,
+                widgets: action.payload
             };
 
         default:

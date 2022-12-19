@@ -1,8 +1,10 @@
 import React, {Component} from "react";
 import { Form } from 'semantic-ui-react';
 import '../style.css';
-import { Button } from 'react-bootstrap';
 import DropdownSingleSelect from "../components/DropdownSingleSelect";
+import { fetchWidgetsApi } from "../utils/fetchDetails";
+import { ButtonComponent } from "../components/ButtonComponent";
+import { fetchDate } from "../utils/fetchDate";
 
 const categoryOptions = [
   { label: "cat1", value: "cat1" },
@@ -10,52 +12,64 @@ const categoryOptions = [
   { label: "cat3", value: "cat3" },
   { label: "cat4", value: "cat4" }
 ];
-
-export default class  CreateWidgetContainer extends Component{
+export default class  WidgetModalContainer extends Component{
     constructor(props) {
         super(props);
         this.state = {
           
           widgetObj: {
-            title:  "",
-            shortDesc: "",
-            category: ""
+            _id: props.widgetData._id||null,
+            title:  props.widgetData.title || "",
+            shortDesc: props.widgetData.shortDesc || "",
+            category: props.widgetData.category || "",
+            createdOn: "",
+            status: "",
+            approvedOn: "",
+            publishedOn: ""
           }
     
         }
         this.updateWidgetData=this.updateWidgetData.bind(this);
-        this.submitCreateWidget = this.submitCreateWidget.bind(this);
-       
-    
+        this.submitWidgetData = this.submitWidgetData.bind(this);
+      
       }
     
     updateWidgetData(value, name){
-        this.setState({widgetObj: { name : value}});
+      const key = `${name}`;
+      this.setState({widgetObj: { ...this.state.widgetObj, [key] : value}});
     }
 
-    submitCreateWidget() {
-        const { title, shortDesc, status, createdOn, category, approvedOn, publishedOn }=this.state;
+    submitWidgetData() {
+        const { editType, submitUpdateWidget, submitCreateWidget } = this.props;
+        const { title, shortDesc, createdOn, category, approvedOn, publishedOn, _id }=this.state.widgetObj;
         let obj =
-        {
-          title,
-          shortDesc,
-          status,
-          createdOn,
-          category,
-          approvedOn,
-          publishedOn,
-          
+            { 
+                _id,
+                title,
+                shortDesc,
+                status: "created",
+                createdOn,
+                category,
+                approvedOn,
+                publishedOn 
+            }
+        if(editType){
+            console.log("input to update Widget api ::::" + JSON.stringify(obj));
+            submitUpdateWidget(obj);
+        }else{
+            obj.createdOn = fetchDate();
+            console.log("input to create Widget api ::::" + JSON.stringify(obj));
+            submitCreateWidget(obj);
         }
-        console.log("input to create Widget api ::::" + JSON.stringify(obj));
-    
-        //this.props.submitCreateWidget(obj);
     
       }
     render(){
+        const { editType} = this.props;
         const { widgetObj } = this.state;
-        const {title, shortDesc} = widgetObj;
+        const {title, shortDesc, category} = widgetObj;
+        
         return(
-        <div>
+        <div className="modal-widget">
           <div className="modal-title">Add new Widget</div>
             <Form id="form1" style={{ width: "600px" }} >
                 <div className="row">
@@ -85,15 +99,15 @@ export default class  CreateWidgetContainer extends Component{
                     <DropdownSingleSelect 
                         options={categoryOptions} 
                         menuHeight={110}
-                        isMulti
                         isClearable
                         placeholder={"Select options..."}
+                        value = {category}
                         update={val => this.updateWidgetData(val, "category")}
                     />
                   </div>
                 </div>
-                <Button className= "submit-btn-style" variant="secondary" 
-                  onClick={this.submitCreateWidget} type="submit"> Create Widget</Button>
+                <ButtonComponent className= "submit-btn-style"  variant="contained"
+                  onClick={this.submitWidgetData} type="submit"> {editType? "Update" : "Create"}</ButtonComponent>
           
             </Form>
         </div>

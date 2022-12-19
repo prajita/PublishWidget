@@ -1,42 +1,19 @@
 import {
-    api
+    fetchWidgetsApi,
+    createWidgetApi,
+    updateWidgetApi
 } from '../utils/fetchDetails';
 
 import {
     FETCH_WIDGETS,
-    REQUEST_WIDGETS,
-    REQUEST_CREATE_WIDGET,
     UPDATE_CREATE_WIDGET_MODAL,
+    UPDATE_LOADER,
     USER_LOGOUT
 } from './actionTypes';
 
-export const requestWidgets = (username) => {
-    return {
-        type: REQUEST_WIDGETS,
-        isAuthenticated:true,
-        username:username,
-        loading: true
-    }
-}
 export const userLogout=()=>{
     return {
         type: USER_LOGOUT
-    }
-}
-export const getWidgetsSuccess = (widgets) => {
-    return {
-        type: FETCH_WIDGETS,
-        payload: widgets,
-        loading: false
-    }
-}
-
-export const loadWidgets = (username) => {
-    return function (dispatch) {
-        dispatch(requestWidgets(username));
-        api((widgets) => {
-            dispatch(getWidgetsSuccess(widgets));
-        });
     }
 }
 
@@ -50,7 +27,74 @@ export const openAddWidgetModal = () => {
     }
 }
 
-export const closeAddWidgetModal = () => {
+export const openEditWidgetModal =()=>{
+    return function (dispatch) {     
+        dispatch({
+            type: UPDATE_CREATE_WIDGET_MODAL,
+            editWidgetModal: true
+        });    
+    }
+}
+
+export const requestWidgets = () => {
+
+    return function (dispatch) {
+        dispatch({
+            type: UPDATE_LOADER,
+            loader: true
+        })
+        fetchWidgetsApi((widgets) => {
+            dispatch({
+                type: FETCH_WIDGETS,
+                payload: widgets,
+                loading: false
+            });
+        });
+    }
+}
+
+
+export const createWidget = widgetObj => {
+
+    return function (dispatch) {
+
+        Promise.all([
+            createWidgetApi(widgetObj, (res) => {
+                console.log("create widget success:::", res);
+            }),
+
+        ]).then(() => {
+            fetchWidgetsApi((widgets) => {
+                dispatch({
+                    type: FETCH_WIDGETS,
+                    payload: widgets
+                });
+            });
+        })
+    }
+}
+
+export const updateWidget = widgetObj => {
+
+    return function (dispatch) {
+
+        Promise.all([
+            updateWidgetApi(widgetObj, (res) => {
+                console.log("update widget success:::", res);
+            }),
+
+        ]).then(() => {
+            fetchWidgetsApi((widgets) => {
+                dispatch({
+                    type: FETCH_WIDGETS,
+                    payload: widgets
+                });
+            });
+        })
+    }
+}
+
+export const closeWidgetModal = () => {
     return function (dispatch) {     
         dispatch({
             type: UPDATE_CREATE_WIDGET_MODAL,

@@ -4,7 +4,7 @@ export const widgetList =[
         shortDesc: "desc widget 1",
         status: "created",
         createdOn: "",
-        category: "",
+        category: "cat1",
         approvedOn: "",
         publishedOn: ""
     },
@@ -13,7 +13,7 @@ export const widgetList =[
         shortDesc: "desc widget 2",
         status: "approved",
         createdOn: "",
-        category: "",
+        category: "cat2",
         approvedOn: "",
         publishedOn: ""
     },
@@ -22,7 +22,7 @@ export const widgetList =[
         shortDesc: "desc widget 3",
         status: "published",
         createdOn: "",
-        category: "",
+        category: "cat1",
         approvedOn: "",
         publishedOn: ""
     }

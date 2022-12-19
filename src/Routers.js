@@ -8,6 +8,7 @@ const Routers = () => {
         <Router location={history.location} navigator={history} >
             <Routes>
                 <Route exact path="/" element={<App/>} />
+                <Route exact path="/publish" element={<App isApprover={true}/>} />
             </Routes>
         </Router >)
 }

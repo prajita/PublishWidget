@@ -1,9 +1,10 @@
 const initialState = {
    
-    widgetList: [],
+    widgets: [],
     loading: true,
     isAuthenticated: true,
-    addWidgetModal: null,
+    addWidgetModal: false,
+    editWidgetModal: false,
     username:'there'
 }
 

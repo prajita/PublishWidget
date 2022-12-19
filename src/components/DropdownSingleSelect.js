@@ -3,7 +3,8 @@ import Select from 'react-select';
  
 const DropdownSingleSelect = props => {
 
-      const {options, isMulti = false, disabled = false, isClearable = true, menuHeight, update, placeholder} = props;
+      const {options, isMulti = false, disabled = false, isClearable = true, menuHeight, update, placeholder, value} = props;
+      const displayVal = {"label": value, "value": value}
       return <Select 
         placeholder= {placeholder}
         options={options} 
@@ -12,7 +13,8 @@ const DropdownSingleSelect = props => {
         isMulti = {isMulti} 
         maxMenuHeight={menuHeight}
         defaultValue= {""}
-        onChange={({value}) => update(value)}
+        value={displayVal}
+        onChange={(data) => update(data ? data.value: "")}
       />
 }
     
