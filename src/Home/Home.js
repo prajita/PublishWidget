@@ -12,7 +12,10 @@ import {
     closeWidgetModal,
     requestWidgets,
     createWidget,
-    updateWidget
+    updateWidget,
+    deleteWidget,
+    approveWidget,
+    publishWidget
   } from '../actions';
 
 import 'react-responsive-modal/styles.css';
@@ -33,6 +36,9 @@ class  Home extends PureComponent{
         this.submitCreateWidget = this.submitCreateWidget.bind(this);
         this.onClickEditWidget = this.onClickEditWidget.bind(this);
         this.onClickDeleteWidget = this.onClickDeleteWidget.bind(this);
+        this.callDeleteWidget = this.callDeleteWidget.bind(this);
+        this.callApproveWidget = this.callApproveWidget.bind(this);
+        this.callPublishWidget = this.callPublishWidget.bind(this);
     }
 
     componentDidMount(){
@@ -61,7 +67,25 @@ class  Home extends PureComponent{
     submitUpdateWidget(obj) {
       this.props.updateWidget(obj);
       this.props.closeWidgetModal();
-  }
+    }
+    callDeleteWidget(){
+      const {widgets, deleteWidget} = this.props;
+      const {currWidgetIndex} =this.state;
+      const widgetToDelete = widgets[`${currWidgetIndex}`];
+      deleteWidget(widgetToDelete._id);
+      this.setState({checkConfirmDeletion: false});
+    }
+
+    callPublishWidget(index){
+      const {widgets} = this.props;
+      const widgetToPublish = widgets[`${index}`];
+      this.props.publishWidget(widgetToPublish._id);
+    }
+    callApproveWidget(index){
+      const {widgets} = this.props;
+      const widgetToApprove = widgets[`${index}`];
+      this.props.approveWidget(widgetToApprove._id);
+    }
     
     render(){
         const { widgets, addWidgetModal, editWidgetModal, isApprover} = this.props;
@@ -86,6 +110,8 @@ class  Home extends PureComponent{
                     list={widgets} 
                     onClickEditWidget={this.onClickEditWidget}
                     onClickDeleteWidget={this.onClickDeleteWidget}
+                    approveWidget={this.callApproveWidget}
+                    publishWidget={this.callPublishWidget}
                 />
                 {checkConfirmDeletion &&
                     <Modal 
@@ -97,8 +123,8 @@ class  Home extends PureComponent{
                           <div className="delete-confirm">
                               <span>Are you sure you want to delete?</span>
                               <div className="delete-confirm-action-buttons">
-                                  <ButtonComponent>confirm</ButtonComponent>
-                                  <ButtonComponent>cancel</ButtonComponent>
+                                  <ButtonComponent onClick={this.callDeleteWidget}>confirm</ButtonComponent>
+                                  <ButtonComponent onClick={()=>this.setState({checkConfirmDeletion: false})}>cancel</ButtonComponent>
                               </div>
                           </div>
                     </Modal>
@@ -132,7 +158,8 @@ Home.propTypes = {
     editWidgetModal: PropTypes.bool,
     requestWidgets: PropTypes.func ,
     createWidget: PropTypes.func ,
-    updateWidget: PropTypes.func
+    updateWidget: PropTypes.func,
+    deleteWidget: PropTypes.func
   };
   
 const mapStateToProps = (state) => {
@@ -152,22 +179,13 @@ const mapDispatchToProps = (dispatch) => {
         closeWidgetModal,
         requestWidgets ,
         createWidget,
-        updateWidget
+        updateWidget,
+        deleteWidget,
+        approveWidget,
+        publishWidget
       }, dispatch
     )
   )
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
-
-
-/**
- * 
- * 
- * 
- * mongodb+srv://prajita:<password>@cluster0.pu3knii.mongodb.net/?retryWrites=true&w=majority
- * 
- * 
- * mongosh "mongodb+srv://cluster0.pu3knii.mongodb.net/myFirstDatabase" --apiVersion 1 --username prajita
- * 
- */

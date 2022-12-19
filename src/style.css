@@ -97,13 +97,22 @@ body {
   .card{
     width: 700px;
     margin: 2%;
-    height: 250px !important;
+    height: 263px !important;
+  }
+  .card-header{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .card-header-date{
+    padding-top: 1%;
   }
   
   .card-title{
     font-size: 20px;
     font-weight: 500;
     color: #00567a;
+    padding-top: 1%;
   }
   .card-footer{
     display: flex;
@@ -133,5 +142,17 @@ body {
   .text-show-more{
     text-decoration: underline;
     color: #00567a;
+  }
+
+  .card-header-left-section{
+    display: flex;
+  }
+  .card-header-status-btn{
+    cursor: auto !important;
+    margin-right: 15px !important;
+    margin-top: 5px !important;
+    height: 30px;
+    background-color: purple !important;
+    color: beige !important;
   }
   

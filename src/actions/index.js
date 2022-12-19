@@ -1,7 +1,10 @@
 import {
     fetchWidgetsApi,
     createWidgetApi,
-    updateWidgetApi
+    updateWidgetApi,
+    deleteWidgetApi,
+    approveWidgetApi,
+    publishWidgetApi
 } from '../utils/fetchDetails';
 
 import {
@@ -64,12 +67,12 @@ export const createWidget = widgetObj => {
             }),
 
         ]).then(() => {
-            fetchWidgetsApi((widgets) => {
+            setTimeout(()=>fetchWidgetsApi((widgets) => {
                 dispatch({
                     type: FETCH_WIDGETS,
                     payload: widgets
                 });
-            });
+            }),20);
         })
     }
 }
@@ -94,6 +97,61 @@ export const updateWidget = widgetObj => {
     }
 }
 
+export const deleteWidget = widgetId =>{
+    return function (dispatch) {
+
+        Promise.all([
+            deleteWidgetApi(widgetId, (res) => {
+                console.log("delete widget success:::", res);
+            }),
+
+        ]).then(() => {
+            setTimeout(()=>fetchWidgetsApi((widgets) => {
+                dispatch({
+                    type: FETCH_WIDGETS,
+                    payload: widgets
+                });
+            }),10);
+        })
+    }
+}
+
+export const publishWidget = widgetId =>{
+    return function (dispatch) {
+
+        Promise.all([
+            publishWidgetApi(widgetId, (res) => {
+                console.log("publish widget success:::", res);
+            }),
+
+        ]).then(() => {
+            setTimeout(()=>fetchWidgetsApi((widgets) => {
+                dispatch({
+                    type: FETCH_WIDGETS,
+                    payload: widgets
+                });
+            }),10);
+        })
+    }
+}
+export const approveWidget = widgetId =>{
+    return function (dispatch) {
+
+        Promise.all([
+            approveWidgetApi(widgetId, (res) => {
+                console.log("approve widget success:::", res);
+            }),
+
+        ]).then(() => {
+            setTimeout(()=>fetchWidgetsApi((widgets) => {
+                dispatch({
+                    type: FETCH_WIDGETS,
+                    payload: widgets
+                });
+            }),20);
+        })
+    }
+}
 export const closeWidgetModal = () => {
     return function (dispatch) {     
         dispatch({

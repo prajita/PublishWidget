@@ -68,5 +68,66 @@ export const updateWidgetApi = (requestObj, callback)=>{
         }
     ).catch(e => console.log('request failed::' + e));
 }
+export const deleteWidgetApi = (widgetId, callback)=>{
+    fetch(`${URL}/${widgetId}`,
+    {
+        method: "DELETE", 
+        cache: "no-cache",
+        headers: {
+            'name': "Content-Type",
+            'content-type': 'application/json'
+        }
+    }
+)
+    .then(
+        res => res.json())
+    .then(
+        data => {
+            console.log("api response:::::", data)
+            callback(data);
+        }
+    ).catch(e => console.log('request failed::' + e));
+}
 
+export const approveWidgetApi =(id, callback)=>{
+    fetch(`${URL}/approved/${id}`,
+    {
+        method: "PUT", 
+        cache: "no-cache",
+        headers: {
+            'name': "Content-Type",
+            'content-type': 'application/json'
+        }
+    }
+)
+    .then(
+        res => res.json())
+    .then(
+        data => {
+            console.log("api response:::::", data)
+            callback(data);
+        }
+    ).catch(e => console.log('request failed::' + e));
+}
+
+export const publishWidgetApi =(id, callback)=>{
+    fetch(`${URL}/published/${id}`,
+    {
+        method: "PUT", 
+        cache: "no-cache",
+        headers: {
+            'name': "Content-Type",
+            'content-type': 'application/json'
+        }
+    }
+)
+    .then(
+        res => res.json())
+    .then(
+        data => {
+            console.log("api response:::::", data)
+            callback(data);
+        }
+    ).catch(e => console.log('request failed::' + e));
+}
 

@@ -3,11 +3,11 @@ import { ButtonComponent } from "../components/ButtonComponent";
 
 
 export const ApproverActions = props =>{
-    const {isApproved=false}=props;
+    const {status, approveWidget = ()=>{}, publishWidget = ()=>{}}=props;
     return  (
         <div>
-            {isApproved ? <ButtonComponent>Publish</ButtonComponent>
-            :<ButtonComponent>Approve</ButtonComponent>}
+            {status==="approved" ? <ButtonComponent onClick={publishWidget}>Publish</ButtonComponent>
+            :status==="created" ? <ButtonComponent onClick={approveWidget}>Approve</ButtonComponent>:null}
         </div>
     );
 }

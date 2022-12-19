@@ -4,10 +4,11 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ApproverActions } from './ApproverActions';
+import { ButtonComponent } from '../components/ButtonComponent';
 
 const CardComponent = props => {
-    const {onClickEditWidget,onClickDeleteWidget, data, indexKey, isApprover} =props;
-    const {title, shortDesc, category, } = data;
+    const {onClickEditWidget,onClickDeleteWidget, approveWidget, publishWidget, data, indexKey, isApprover} =props;
+    const {title, shortDesc, category, publishedOn, status} = data;
     const showMore = shortDesc.length> 200;
 
     const showText=()=>{
@@ -21,14 +22,20 @@ const CardComponent = props => {
     return (
          
             <div className="card">
+                <div className="card-header">
+                    <div className="card-header-left-section">
+                        <ButtonComponent disabled className="card-header-status-btn" size="small">{status}</ButtonComponent>
+                        <div className="card-title">{title}</div>
+                    </div>  
+                    {publishedOn && <div className="card-header-date">Published on :{publishedOn}</div>}
+                </div>
                 <div className="card-body">
-                    <div className="card-title">{title}</div>
                     <p className="card-text">{showText()}</p>
                     <p className="card-text">Category: {category}</p>
                 </div>
                 <div className="card-footer">
                         <span className="card-footer-link">
-                            <a className="card-footer-link-anchor" href="#" >Learn More</a>
+                            <a className="card-footer-link-anchor" href="javascript:void(0)" >Full Report</a>
                         </span>
                         
                         {!isApprover ?
@@ -40,7 +47,7 @@ const CardComponent = props => {
                                 <DeleteIcon />
                             </IconButton>
                         </div>:
-                        <ApproverActions/>}
+                        <ApproverActions status={status} approveWidget={()=>approveWidget(indexKey)} publishWidget={()=>publishWidget(indexKey)}/>}
                     </div>
             </div>
   );  
