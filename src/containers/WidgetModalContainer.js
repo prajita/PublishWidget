@@ -54,6 +54,7 @@ export default class  WidgetModalContainer extends Component{
                 publishedOn 
             }
         if(editType){
+            obj.status = "updated";
             console.log("input to update Widget api ::::" + JSON.stringify(obj));
             submitUpdateWidget(obj);
         }else{

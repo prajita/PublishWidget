@@ -15,12 +15,14 @@ import {
     updateWidget,
     deleteWidget,
     approveWidget,
-    publishWidget
+    publishWidget,
+    rejectWidget
   } from '../actions';
 
 import 'react-responsive-modal/styles.css';
 import '../style.css';
 import { ButtonComponent } from "../components/ButtonComponent";
+import {SearchSectionComponent} from "../components/SearchSectionComponent";
 
 
 class  Home extends PureComponent{
@@ -28,8 +30,9 @@ class  Home extends PureComponent{
     constructor(props) {
         super(props);
         this.state = {
-          currWidgetIndex: -1,
-          checkConfirmDeletion: false
+          currWidgetId: -1,
+          checkConfirmDeletion: false,
+          updatedWidgets: props.widgets||[]
         }
         this.onClickAddWidget = this.onClickAddWidget.bind(this);
         this.onClickModalClose = this.onClickModalClose.bind(this);
@@ -39,6 +42,8 @@ class  Home extends PureComponent{
         this.callDeleteWidget = this.callDeleteWidget.bind(this);
         this.callApproveWidget = this.callApproveWidget.bind(this);
         this.callPublishWidget = this.callPublishWidget.bind(this);
+        this.callRejectWidget = this.callRejectWidget.bind(this);
+        this.updateSearchString = this.updateSearchString.bind(this);
     }
 
     componentDidMount(){
@@ -46,16 +51,16 @@ class  Home extends PureComponent{
     }
 
     onClickAddWidget(){
-        this.props.openAddWidgetModal();
+      this.setState({updatedWidgets: this.props.widgets, searchStr:"" });
+      this.props.openAddWidgetModal();
     }
-    onClickEditWidget(key){
-      this.setState({currWidgetIndex: key});
+    onClickEditWidget(id){
+      this.setState({currWidgetId: id});
       this.props.openEditWidgetModal();
     }
-    onClickDeleteWidget(key){
-      this.setState({currWidgetIndex: key, checkConfirmDeletion: true});
+    onClickDeleteWidget(id){
+      this.setState({currWidgetId: id, checkConfirmDeletion: true});
     }
-    
     onClickModalClose() {
         this.props.closeWidgetModal();
     }
@@ -63,34 +68,44 @@ class  Home extends PureComponent{
         this.props.createWidget(obj);
         this.props.closeWidgetModal();
     }
-
     submitUpdateWidget(obj) {
+      this.setState({updatedWidgets: this.props.widgets, searchStr:""});
       this.props.updateWidget(obj);
       this.props.closeWidgetModal();
     }
     callDeleteWidget(){
       const {widgets, deleteWidget} = this.props;
-      const {currWidgetIndex} =this.state;
-      const widgetToDelete = widgets[`${currWidgetIndex}`];
+      const {currWidgetId}=this.state;
+      const widgetToDelete = widgets.find(e=>e._id === currWidgetId);
       deleteWidget(widgetToDelete._id);
-      this.setState({checkConfirmDeletion: false});
+      this.setState({checkConfirmDeletion: false, updatedWidgets: widgets, searchStr:"" });
     }
 
-    callPublishWidget(index){
+    callPublishWidget(id){
+      this.props.publishWidget(id);
       const {widgets} = this.props;
-      const widgetToPublish = widgets[`${index}`];
-      this.props.publishWidget(widgetToPublish._id);
+      this.setState({updatedWidgets: widgets, searchStr:"" });
     }
-    callApproveWidget(index){
+    callApproveWidget(id){
+      this.props.approveWidget(id);
       const {widgets} = this.props;
-      const widgetToApprove = widgets[`${index}`];
-      this.props.approveWidget(widgetToApprove._id);
+      this.setState({updatedWidgets: widgets, searchStr:"" });
+    }
+    callRejectWidget(id){
+      this.props.rejectWidget(id);
+      const {widgets} = this.props;
+      this.setState({updatedWidgets: widgets, searchStr:"" });
+    }
+    updateSearchString(searchStr){
+      const {widgets}=this.props;
+      const updatedWidgets = widgets.filter(e=>e.title.toLowerCase().includes(searchStr.toLowerCase()));
+      this.setState({updatedWidgets, searchStr});
     }
     
     render(){
         const { widgets, addWidgetModal, editWidgetModal, isApprover} = this.props;
-        const {currWidgetIndex, checkConfirmDeletion}=this.state;
-        const currWidget  = (currWidgetIndex!==-1 && editWidgetModal) ? widgets[currWidgetIndex] : {};
+        const {currWidgetId, checkConfirmDeletion, updatedWidgets, searchStr}=this.state;
+        const currWidget  = (currWidgetId!==-1 && editWidgetModal) ? widgets.find(e=>e._id===currWidgetId) : {};
         
         return (
               <>
@@ -104,14 +119,16 @@ class  Home extends PureComponent{
                       </div>
                     </div>
                 </div>
+                  <SearchSectionComponent value={searchStr} updateSearchString={this.updateSearchString}/>
                 
                 <WidgetsListContainer 
                     isApprover ={isApprover}
-                    list={widgets} 
+                    list={searchStr ? updatedWidgets: widgets} 
                     onClickEditWidget={this.onClickEditWidget}
                     onClickDeleteWidget={this.onClickDeleteWidget}
                     approveWidget={this.callApproveWidget}
                     publishWidget={this.callPublishWidget}
+                    rejectWidget={this.callRejectWidget}
                 />
                 {checkConfirmDeletion &&
                     <Modal 
@@ -159,7 +176,10 @@ Home.propTypes = {
     requestWidgets: PropTypes.func ,
     createWidget: PropTypes.func ,
     updateWidget: PropTypes.func,
-    deleteWidget: PropTypes.func
+    deleteWidget: PropTypes.func,
+    rejectWidget: PropTypes.func,
+    approveWidget: PropTypes.func,
+    publishWidget: PropTypes.func
   };
   
 const mapStateToProps = (state) => {
@@ -182,7 +202,8 @@ const mapDispatchToProps = (dispatch) => {
         updateWidget,
         deleteWidget,
         approveWidget,
-        publishWidget
+        publishWidget,
+        rejectWidget
       }, dispatch
     )
   )

@@ -14,3 +14,15 @@ class App extends Component {
 }
 
 export default App;
+
+/*improvement:
+
+ 1.reject with comments
+ 2.scheduled publish
+ 3.status is scheduled publish but approver decides to reject
+ 4.sort by created date
+ 5.filter by created|approved|published
+ 6.pagination and lazy loading on widget list
+ 7.audit and history
+ 8. real time app with web socket
+*/

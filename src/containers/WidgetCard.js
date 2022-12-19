@@ -5,10 +5,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ApproverActions } from './ApproverActions';
 import { ButtonComponent } from '../components/ButtonComponent';
+import { ColouredButtonComponent } from '../components/ColouredButtonComponent';
 
 const CardComponent = props => {
-    const {onClickEditWidget,onClickDeleteWidget, approveWidget, publishWidget, data, indexKey, isApprover} =props;
-    const {title, shortDesc, category, publishedOn, status} = data;
+    const {onClickEditWidget,onClickDeleteWidget, approveWidget, publishWidget,rejectWidget, data, isApprover} =props;
+    const {title, shortDesc, category, publishedOn, status, _id} = data;
     const showMore = shortDesc.length> 200;
 
     const showText=()=>{
@@ -24,7 +25,7 @@ const CardComponent = props => {
             <div className="card">
                 <div className="card-header">
                     <div className="card-header-left-section">
-                        <ButtonComponent disabled className="card-header-status-btn" size="small">{status}</ButtonComponent>
+                        <ColouredButtonComponent disabled className="card-header-status-btn" size="small" status={status}/>
                         <div className="card-title">{title}</div>
                     </div>  
                     {publishedOn && <div className="card-header-date">Published on :{publishedOn}</div>}
@@ -38,16 +39,22 @@ const CardComponent = props => {
                             <a className="card-footer-link-anchor" href="javascript:void(0)" >Full Report</a>
                         </span>
                         
-                        {!isApprover ?
+                        {(!isApprover &&  (status ==="rejected" || status==="created"))?
                          <div className="card-footer-buttons">
-                            <IconButton color="primary" aria-label="edit" onClick={ ()=>onClickEditWidget(indexKey)}>
+                            <IconButton color="primary" aria-label="edit" onClick={ ()=>onClickEditWidget(_id)}>
                                 <EditIcon />
                             </IconButton>
-                            <IconButton color="primary" aria-label="delete" onClick={ ()=>onClickDeleteWidget(indexKey)}>
+                            <IconButton color="primary" aria-label="delete" onClick={ ()=>onClickDeleteWidget(_id)}>
                                 <DeleteIcon />
                             </IconButton>
                         </div>:
-                        <ApproverActions status={status} approveWidget={()=>approveWidget(indexKey)} publishWidget={()=>publishWidget(indexKey)}/>}
+                        isApprover ? <ApproverActions 
+                            status={status} 
+                            approveWidget={()=>approveWidget(_id)} 
+                            rejectWidget={()=>rejectWidget(_id)} 
+                            publishWidget={()=>publishWidget(_id)}/>
+                        : null 
+                        }
                     </div>
             </div>
   );  

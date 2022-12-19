@@ -90,28 +90,21 @@ export const deleteWidgetApi = (widgetId, callback)=>{
 }
 
 export const approveWidgetApi =(id, callback)=>{
-    fetch(`${URL}/approved/${id}`,
-    {
-        method: "PUT", 
-        cache: "no-cache",
-        headers: {
-            'name': "Content-Type",
-            'content-type': 'application/json'
-        }
-    }
-)
-    .then(
-        res => res.json())
-    .then(
-        data => {
-            console.log("api response:::::", data)
-            callback(data);
-        }
-    ).catch(e => console.log('request failed::' + e));
+    callStatusUpdateApi(id, "approved", callback);
 }
 
 export const publishWidgetApi =(id, callback)=>{
-    fetch(`${URL}/published/${id}`,
+    callStatusUpdateApi(id, "published", callback);
+}
+
+
+
+export const rejectWidgetApi =(id, callback)=>{
+    callStatusUpdateApi(id, "rejected", callback);  
+}
+
+export const callStatusUpdateApi = (id, status, callback)=>{
+    fetch(`${URL}/${status}/${id}`,
     {
         method: "PUT", 
         cache: "no-cache",
@@ -120,7 +113,7 @@ export const publishWidgetApi =(id, callback)=>{
             'content-type': 'application/json'
         }
     }
-)
+    )
     .then(
         res => res.json())
     .then(

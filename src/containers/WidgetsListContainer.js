@@ -6,7 +6,7 @@ class WidgetsListContainer extends Component{
 
     render() {
         let showData = [];
-        const {onClickEditWidget,onClickDeleteWidget, approveWidget, publishWidget, list, isApprover } = this.props;
+        const {onClickEditWidget,onClickDeleteWidget, approveWidget, publishWidget,rejectWidget, list, isApprover } = this.props;
         if (list && list.length > 0) {
           list.map((each, index) => {
             showData.push(
@@ -19,6 +19,7 @@ class WidgetsListContainer extends Component{
                     onClickDeleteWidget={onClickDeleteWidget}
                     approveWidget={approveWidget}
                     publishWidget={publishWidget}
+                    rejectWidget={rejectWidget}
                   />
               )
           })

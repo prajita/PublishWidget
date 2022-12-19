@@ -4,7 +4,8 @@ import {
     updateWidgetApi,
     deleteWidgetApi,
     approveWidgetApi,
-    publishWidgetApi
+    publishWidgetApi,
+    rejectWidgetApi
 } from '../utils/fetchDetails';
 
 import {
@@ -111,7 +112,7 @@ export const deleteWidget = widgetId =>{
                     type: FETCH_WIDGETS,
                     payload: widgets
                 });
-            }),10);
+            }),20);
         })
     }
 }
@@ -152,6 +153,26 @@ export const approveWidget = widgetId =>{
         })
     }
 }
+
+export const rejectWidget = widgetId =>{
+    return function (dispatch) {
+
+        Promise.all([
+            rejectWidgetApi(widgetId, (res) => {
+                console.log("reject widget success:::", res);
+            }),
+
+        ]).then(() => {
+            setTimeout(()=>fetchWidgetsApi((widgets) => {
+                dispatch({
+                    type: FETCH_WIDGETS,
+                    payload: widgets
+                });
+            }),20);
+        })
+    }
+}
+
 export const closeWidgetModal = () => {
     return function (dispatch) {     
         dispatch({

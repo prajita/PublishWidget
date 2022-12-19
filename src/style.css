@@ -117,6 +117,7 @@ body {
   .card-footer{
     display: flex;
     justify-content: space-between;
+    height: 50px;
   }
   .card-footer-buttons{
     display: flex;
@@ -152,7 +153,23 @@ body {
     margin-right: 15px !important;
     margin-top: 5px !important;
     height: 30px;
-    background-color: purple !important;
     color: beige !important;
+  }
+
+  .search-section{
+    margin: 30px 80px;
+    width: 25%;
+  }
+
+  .reject-btn{
+    background-color: darkred !important;
+  }
+
+  .approve-btn{
+    background-color: darkgreen !important;
+    margin-right: 10px !important;
+  }
+  .publish-btn{
+    background-color: darkgreen !important;
   }
   
