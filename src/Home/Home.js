@@ -49,14 +49,19 @@ class  Home extends PureComponent{
         this.callRejectWidget = this.callRejectWidget.bind(this);
         this.updateSearchString = this.updateSearchString.bind(this);
         this.updateFiltered = this.updateFiltered.bind(this);
+        this.clearAll = this.clearAll.bind(this);
     }
 
     componentDidMount(){
-        this.props.requestWidgets();
+      this.props.requestWidgets();
+    }
+
+    clearAll(){
+      this.setState({updatedWidgets: this.props.widgets, searchStr:"", selectedFilter:[]});
     }
 
     onClickAddWidget(){
-      this.setState({updatedWidgets: this.props.widgets, searchStr:"", selectedFilter:[]});
+      this.clearAll();
       this.props.openAddWidgetModal();
     }
     onClickEditWidget(id){
@@ -74,7 +79,7 @@ class  Home extends PureComponent{
         this.props.closeWidgetModal();
     }
     submitUpdateWidget(obj) {
-      this.setState({updatedWidgets: this.props.widgets, searchStr:"", selectedFilter:[]});
+      this.clearAll();
       this.props.updateWidget(obj);
       this.props.closeWidgetModal();
     }
@@ -88,18 +93,15 @@ class  Home extends PureComponent{
 
     callPublishWidget(id){
       this.props.publishWidget(id);
-      const {widgets} = this.props;
-      this.setState({updatedWidgets: widgets, searchStr:"" , selectedFilter:[]});
+      this.clearAll();
     }
     callApproveWidget(id){
       this.props.approveWidget(id);
-      const {widgets} = this.props;
-      this.setState({updatedWidgets: widgets, searchStr:"", selectedFilter:[] });
+      this.clearAll();
     }
     callRejectWidget(id){
       this.props.rejectWidget(id);
-      const {widgets} = this.props;
-      this.setState({updatedWidgets: widgets, searchStr:"", selectedFilter:[] });
+      this.clearAll();
     }
     updateSearchString(searchStr){
       const {filteredWidgets, selectedFilter}=this.state;
