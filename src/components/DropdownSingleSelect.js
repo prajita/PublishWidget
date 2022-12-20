@@ -3,14 +3,13 @@ import Select from 'react-select';
  
 const DropdownSingleSelect = props => {
 
-      const {options, isMulti = false, disabled = false, isClearable = true, menuHeight, update, placeholder, value} = props;
+      const {options, disabled = false, isClearable = true, menuHeight, update, placeholder, value} = props;
       const displayVal = {"label": value, "value": value}
       return <Select 
         placeholder= {placeholder}
         options={options} 
         isClearable={isClearable}
         disabled = {disabled}
-        isMulti = {isMulti} 
         maxMenuHeight={menuHeight}
         defaultValue= {""}
         value={displayVal}

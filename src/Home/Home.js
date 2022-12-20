@@ -22,6 +22,9 @@ import 'react-responsive-modal/styles.css';
 import '../style.css';
 import { ButtonComponent } from "../components/ButtonComponent";
 import {SearchSectionComponent} from "../components/SearchSectionComponent";
+import {FilterSectionComponent} from "../components/FilterSectionComponent";
+
+
 
 
 class  Home extends PureComponent{
@@ -31,7 +34,9 @@ class  Home extends PureComponent{
         this.state = {
           currWidgetId: -1,
           checkConfirmDeletion: false,
-          updatedWidgets: props.widgets||[]
+          updatedWidgets: props.widgets||[],
+          filteredWidgets:  props.widgets||[],
+          selectedFilter: []
         }
         this.onClickAddWidget = this.onClickAddWidget.bind(this);
         this.onClickModalClose = this.onClickModalClose.bind(this);
@@ -43,6 +48,7 @@ class  Home extends PureComponent{
         this.callPublishWidget = this.callPublishWidget.bind(this);
         this.callRejectWidget = this.callRejectWidget.bind(this);
         this.updateSearchString = this.updateSearchString.bind(this);
+        this.updateFiltered = this.updateFiltered.bind(this);
     }
 
     componentDidMount(){
@@ -50,7 +56,7 @@ class  Home extends PureComponent{
     }
 
     onClickAddWidget(){
-      this.setState({updatedWidgets: this.props.widgets, searchStr:"" });
+      this.setState({updatedWidgets: this.props.widgets, searchStr:"", selectedFilter:[]});
       this.props.openAddWidgetModal();
     }
     onClickEditWidget(id){
@@ -68,7 +74,7 @@ class  Home extends PureComponent{
         this.props.closeWidgetModal();
     }
     submitUpdateWidget(obj) {
-      this.setState({updatedWidgets: this.props.widgets, searchStr:""});
+      this.setState({updatedWidgets: this.props.widgets, searchStr:"", selectedFilter:[]});
       this.props.updateWidget(obj);
       this.props.closeWidgetModal();
     }
@@ -77,34 +83,44 @@ class  Home extends PureComponent{
       const {currWidgetId}=this.state;
       const widgetToDelete = widgets.find(e=>e._id === currWidgetId);
       deleteWidget(widgetToDelete._id);
-      this.setState({checkConfirmDeletion: false, updatedWidgets: widgets, searchStr:"" });
+      this.setState({checkConfirmDeletion: false, updatedWidgets: widgets, searchStr:"", selectedFilter:[] });
     }
 
     callPublishWidget(id){
       this.props.publishWidget(id);
       const {widgets} = this.props;
-      this.setState({updatedWidgets: widgets, searchStr:"" });
+      this.setState({updatedWidgets: widgets, searchStr:"" , selectedFilter:[]});
     }
     callApproveWidget(id){
       this.props.approveWidget(id);
       const {widgets} = this.props;
-      this.setState({updatedWidgets: widgets, searchStr:"" });
+      this.setState({updatedWidgets: widgets, searchStr:"", selectedFilter:[] });
     }
     callRejectWidget(id){
       this.props.rejectWidget(id);
       const {widgets} = this.props;
-      this.setState({updatedWidgets: widgets, searchStr:"" });
+      this.setState({updatedWidgets: widgets, searchStr:"", selectedFilter:[] });
     }
     updateSearchString(searchStr){
+      const {filteredWidgets, selectedFilter}=this.state;
       const {widgets}=this.props;
-      const updatedWidgets = widgets.filter(e=>e.title.toLowerCase().includes(searchStr.toLowerCase()));
+      const toFilter = selectedFilter.length>0? filteredWidgets : widgets;
+      const updatedWidgets = toFilter.filter(e=>e.title.toLowerCase().includes(searchStr.toLowerCase()));
       this.setState({updatedWidgets, searchStr});
+    }
+
+    updateFiltered(values){
+      const {widgets}=this.props;
+      const listOfEntries = values.map(e=>e.value);
+      const filteredWidgets = (values && values.length>0) ? widgets.filter(e=>listOfEntries.includes(e.status)): widgets;
+      this.setState({filteredWidgets, selectedFilter: values , searchStr: ""});
     }
     
     render(){
         const { widgets, addWidgetModal, editWidgetModal, isApprover} = this.props;
-        const {currWidgetId, checkConfirmDeletion, updatedWidgets, searchStr}=this.state;
+        const {currWidgetId, checkConfirmDeletion, updatedWidgets, searchStr, selectedFilter, filteredWidgets}=this.state;
         const currWidget  = (currWidgetId!==-1 && editWidgetModal) ? widgets.find(e=>e._id===currWidgetId) : {};
+        const currList =  searchStr ? updatedWidgets : selectedFilter.length>0 ? filteredWidgets : widgets;
         
         return (
               <>
@@ -118,11 +134,15 @@ class  Home extends PureComponent{
                       </div>}
                     </div>
                 </div>
+                <div className="search-filter-wrapper">
                   <SearchSectionComponent value={searchStr} updateSearchString={this.updateSearchString}/>
-                
+                  <span className="filter-section">
+                      <FilterSectionComponent value={selectedFilter} updateFiltered={this.updateFiltered}/>
+                  </span>
+                </div>
                 <WidgetsListContainer 
                     isApprover ={isApprover}
-                    list={searchStr ? updatedWidgets: widgets} 
+                    list={currList} 
                     onClickEditWidget={this.onClickEditWidget}
                     onClickDeleteWidget={this.onClickDeleteWidget}
                     approveWidget={this.callApproveWidget}

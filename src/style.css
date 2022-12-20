@@ -193,4 +193,15 @@ body {
   .wrapper-spinner{
     margin-left: 45%;
   }
+
+  .search-filter-wrapper{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 450px;
+    align-items: center;
+  }
+
+  .ilter-section{
+    min-width: 240px;
+  }
   
