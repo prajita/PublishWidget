@@ -6,13 +6,13 @@ export const ColouredButtonComponent = props=>{
 
     switch (status){
         case "created":
-            colorstyle = "darkgreen";
+            colorstyle = "cornflowerblue";
             break;
         case "updated":
-            colorstyle = "navy";
+            colorstyle = "mediumorchid";
             break;
         case "approved":
-            colorstyle = "palevioletred";
+            colorstyle = "olivedrab";
             break;
         case "published":
             colorstyle = "black";
@@ -29,5 +29,5 @@ export const ColouredButtonComponent = props=>{
         color:'blue',
         "background-color":colorstyle
       }
-    return <button id="btn-id" disabled style={styles} {...props}>{status}</button>;
+    return <button id="btn-id" disabled style={styles} {...props}>{status.toUpperCase()}</button>;
 }

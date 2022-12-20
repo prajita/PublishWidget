@@ -112,7 +112,7 @@ class  Home extends PureComponent{
                 <div>
                     <div className="row">
                       <div className="col-9 my-widget-header">
-                        <label >My Widgets {isApprover ? "Admin View": ""}</label>
+                        <label >Threat Reports {isApprover ? "Admin View": ""}</label>
                       </div>
                       <div className="col-3">
                         <ButtonComponent variant="contained" onClick={this.onClickAddWidget}>Add Widget</ButtonComponent>
