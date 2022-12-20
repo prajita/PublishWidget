@@ -3,7 +3,6 @@ import Modal from 'react-responsive-modal';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
 import WidgetModalContainer from "../containers/WidgetModalContainer";
 import WidgetsListContainer from "../containers/WidgetsListContainer";
 import {

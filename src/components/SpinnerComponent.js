@@ -5,12 +5,9 @@ export default class SpinnerComponent extends Component {
     
     render() {
         return (
-            <div className='busy-indicator' >
-                <div className='busy-background'></div>
-                <h2>{this.props.message}</h2>
-                <div className='busy-icon'>
-                    <i className='fa fa-cog fa-spin fa-3x fa-fw'></i>
-                </div>
+            <div className="spinner-container">
+                <div className="loading-spinner"></div>
+                <div>{this.props.message}</div>
             </div>
         )
     }

@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import { Form } from 'semantic-ui-react';
 import '../style.css';
 import DropdownSingleSelect from "../components/DropdownSingleSelect";
-import { fetchWidgetsApi } from "../utils/fetchDetails";
 import { ButtonComponent } from "../components/ButtonComponent";
 import { fetchDate } from "../utils/fetchDate";
 
