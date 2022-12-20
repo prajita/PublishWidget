@@ -11,7 +11,7 @@ export const ApproverActions = props =>{
                 <ButtonComponent className="publish-btn" onClick={publishWidget}>Publish</ButtonComponent>
                 <ButtonComponent disabled  onClick={rejectWidget}>Reject</ButtonComponent>
             </>)
-        }else if(status==="created"){
+        }else if(status==="created"|| status==="updated"){
             return(<>
                 <ButtonComponent className="approve-btn" onClick={approveWidget}>Approve</ButtonComponent>
                 <ButtonComponent className="reject-btn" onClick={rejectWidget}>Reject</ButtonComponent>

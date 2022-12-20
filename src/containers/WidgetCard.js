@@ -4,7 +4,6 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ApproverActions } from './ApproverActions';
-import { ButtonComponent } from '../components/ButtonComponent';
 import { ColouredButtonComponent } from '../components/ColouredButtonComponent';
 
 const CardComponent = props => {
@@ -39,7 +38,7 @@ const CardComponent = props => {
                             <a className="card-footer-link-anchor" href="javascript:void(0)" >Full Report</a>
                         </span>
                         
-                        {(!isApprover &&  (status ==="rejected" || status==="created"))?
+                        {(!isApprover &&  (status ==="rejected" || status==="created" || status==="updated"))?
                          <div className="card-footer-buttons">
                             <IconButton color="primary" aria-label="edit" onClick={ ()=>onClickEditWidget(_id)}>
                                 <EditIcon />

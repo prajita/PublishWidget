@@ -114,9 +114,9 @@ class  Home extends PureComponent{
                       <div className="col-9 my-widget-header">
                         <label >Threat Reports {isApprover ? "Admin View": ""}</label>
                       </div>
-                      <div className="col-3">
+                      {!isApprover && <div className="col-3">
                         <ButtonComponent variant="contained" onClick={this.onClickAddWidget}>Add Widget</ButtonComponent>
-                      </div>
+                      </div>}
                     </div>
                 </div>
                   <SearchSectionComponent value={searchStr} updateSearchString={this.updateSearchString}/>
