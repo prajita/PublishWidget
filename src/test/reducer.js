@@ -4,7 +4,7 @@ const initialState = {
     isAuthenticated: true,
     addWidgetModal: false,
     editWidgetModal: false,
-    username:'there'
+    username:''
 };
 const reducer = (state = initialState) => {
     return state;

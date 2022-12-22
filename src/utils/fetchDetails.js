@@ -1,4 +1,6 @@
-const URL = "http://localhost:3005/api/widgets";
+const URL = "http://localhost:3007/api/widgets";
+const loginURL ="http://localhost:3007/login";
+
 export const fetchWidgetsApi = callback => {
     fetch(URL,
         {
@@ -14,10 +16,9 @@ export const fetchWidgetsApi = callback => {
             res => res.json())
         .then(
             data => {
-                console.log("api response:::::", data)
                 callback(data);
             }
-        ).catch(e => console.log('request failed::' + e));
+        ).catch(e => callback(e));
 
 
 }
@@ -124,3 +125,25 @@ export const callStatusUpdateApi = (id, status, callback)=>{
     ).catch(e => console.log('request failed::' + e));
 }
 
+export const requestLoginApi = async (requestObj, callback)=>{
+    fetch(loginURL,
+    {
+        method: "POST", 
+        cache: "no-cache",
+        headers: {
+            'name': "Content-Type",
+            'content-type': 'application/json',
+            'value': "application/json"
+        },
+        body: JSON.stringify(requestObj)
+    }
+    )
+    .then(
+        res => res.json())
+    .then(
+        data => {
+            console.log("api response:::::", data)
+            callback(data);
+        }
+    ).catch(e => callback(e));
+}

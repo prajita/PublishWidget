@@ -27,7 +27,7 @@ export const ColouredButtonComponent = props=>{
     }
     const styles = {
         color:'blue',
-        "background-color":colorstyle
+        "backgroundColor":colorstyle
       }
     return <button id="btn-id" disabled style={styles} {...props}>{status.toUpperCase()}</button>;
 }

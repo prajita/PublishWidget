@@ -30,6 +30,7 @@ body {
   .row{
     width: 95%;
     padding-left: 4%;
+    align-items: center;
   }
   .modal-widget .row{
     padding: 1%;
@@ -204,4 +205,42 @@ body {
   .ilter-section{
     min-width: 240px;
   }
+
+  .input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 10px;
+  }
+  .login-submit{
+    margin-top: 50px;
+    margin-left: 240px;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue" !important;
+    background-color: #00567a;
+    color: beige;
+    border: none;
+    border-radius: 5%;
+    width: 100px;
+    
+  }
+
+  .login-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 10px;
+    border: 1px solid black;
+    height: 400px;
+    width: 500px;
+    margin-top: 200px;
+    margin-left: 800px;
+  }
+
+  .error-msg{
+    color: darkred;
+    padding-left: 10px;
+  }
+
   

@@ -5,21 +5,19 @@ import {
     deleteWidgetApi,
     approveWidgetApi,
     publishWidgetApi,
-    rejectWidgetApi
+    rejectWidgetApi,
+    requestLoginApi
 } from '../utils/fetchDetails';
 
 import {
     FETCH_WIDGETS,
     UPDATE_CREATE_WIDGET_MODAL,
     UPDATE_LOADER,
-    USER_LOGOUT
+    USER_LOGOUT,
+    LOGIN_ERROR,
+    USER_LOGIN
 } from './actionTypes';
 
-export const userLogout=()=>{
-    return {
-        type: USER_LOGOUT
-    }
-}
 
 export const openAddWidgetModal = () => {
     return function (dispatch) {     
@@ -182,9 +180,38 @@ export const closeWidgetModal = () => {
         });    
     }
 }
-
-export const logoutState=()=>{
+export const requestLogin = (reqObj) => {
     return function(dispatch){
-        dispatch(userLogout());
+        
+        requestLoginApi(reqObj, (res) => {
+            console.log("login api resp::", res);
+
+            if(!res.error && res.message){
+                dispatch({
+                    type: USER_LOGIN,
+                    user: res.user,
+                    isAuthenticated: true,
+                    loginError:""
+                }); 
+            }else{
+                dispatch({
+                    type: LOGIN_ERROR,
+                    loginError:res.error,
+                    isAuthenticated: false
+                })
+            }
+        });
+        
+    }
+}
+
+export const requestLogout = (reqObj) => {
+    return function(dispatch){
+        
+        dispatch({
+            type: USER_LOGOUT,
+            loginError: "",
+            isAuthenticated: false
+        })
     }
 }

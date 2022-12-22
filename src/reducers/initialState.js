@@ -5,7 +5,8 @@ const initialState = {
     isAuthenticated: true,
     addWidgetModal: false,
     editWidgetModal: false,
-    username:'there'
+    user:{},
+    loginError:""
 }
 
 export default initialState;

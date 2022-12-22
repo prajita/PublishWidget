@@ -5,7 +5,10 @@ import storage from 'redux-persist/lib/storage';
 import {
     UPDATE_CREATE_WIDGET_MODAL,
     FETCH_WIDGETS,
-    UPDATE_LOADER
+    UPDATE_LOADER,
+    USER_LOGIN,
+    USER_LOGOUT,
+    LOGIN_ERROR
 } from '../actions/actionTypes';
 
 
@@ -30,6 +33,22 @@ const rootReducer = (state = initialState, action) => {
                 loading: action.loading,
                 widgets: action.payload
             };
+        case USER_LOGIN:
+            return{
+                isAuthenticated: action.isAuthenticated,
+                user: action.user,
+                loginError: action.loginError
+            }
+        case USER_LOGOUT:
+            return {
+                isAuthenticated: action.isAuthenticated,
+                user: action.user
+            }
+        case LOGIN_ERROR:
+            return{
+                isAuthenticated: action.isAuthenticated,
+                loginError: action.loginError
+            }
 
         default:
             return state;

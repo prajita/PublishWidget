@@ -1,19 +1,29 @@
 import React,{Component} from "react";
+import { connect } from 'react-redux';
 import NavHeader from "./components/NavHeader";
 import {Home} from "./Home";
+
 import './style.css';
 
 class App extends Component {
   
   render() {
     return (<div className="App">
-                <NavHeader isApprover={this.props.isApprover}/>
-                <Home isApprover={this.props.isApprover}/>        
+                <NavHeader isApprover={this.props.user.role==="admin"}/>
+                <Home isApprover={this.props.user.role==="admin"}/>        
             </div>
   );}
 }
 
-export default App;
+  
+const mapStateToProps = (state) => {
+  return {
+    user: state.user     
+  };
+}
+
+
+export default connect(mapStateToProps, null)(App);
 
 /*improvement:
 
