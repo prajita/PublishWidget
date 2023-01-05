@@ -1,5 +1,6 @@
-const URL = "http://localhost:3007/api/widgets";
-const loginURL ="http://localhost:3007/login";
+const PORT = 3000;
+const URL = `http://localhost:${PORT}/api/widgets`;
+const loginURL =`http://localhost:${PORT}/login`;
 
 export const fetchWidgetsApi = callback => {
     fetch(URL,
@@ -16,7 +17,7 @@ export const fetchWidgetsApi = callback => {
             res => res.json())
         .then(
             data => {
-                callback(data);
+                callback(data.widgets);
             }
         ).catch(e => callback(e));
 
