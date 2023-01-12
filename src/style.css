@@ -51,6 +51,11 @@ body {
     min-height: 350px;
   }
 
+  .customLogoutConfirm.react-responsive-modal-modal{
+    height: 200px;
+    width: 200px;
+  }
+
   .delete-confirm{
     display: flex;
     flex-direction: column;
@@ -67,11 +72,12 @@ body {
     border: 1px gray solid;
   }
   
-  .navbar-nav{
+  .navbar-nav-style{
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    margin-left: 3.5%;
+    margin-right: 21%;
   }
 
   .submit-btn-style{

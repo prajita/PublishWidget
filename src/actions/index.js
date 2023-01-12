@@ -205,13 +205,13 @@ export const requestLogin = (reqObj) => {
     }
 }
 
-export const requestLogout = (reqObj) => {
+export const requestLogout = () => {
     return function(dispatch){
         
         dispatch({
             type: USER_LOGOUT,
-            loginError: "",
-            isAuthenticated: false
+            isAuthenticated: false,
+            user: {}
         })
     }
 }

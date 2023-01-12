@@ -15,7 +15,8 @@ import {
     deleteWidget,
     approveWidget,
     publishWidget,
-    rejectWidget
+    rejectWidget,
+    requestLogout
   } from '../actions';
 
 import 'react-responsive-modal/styles.css';
@@ -23,6 +24,8 @@ import '../style.css';
 import { ButtonComponent } from "../components/ButtonComponent";
 import {SearchSectionComponent} from "../components/SearchSectionComponent";
 import {FilterSectionComponent} from "../components/FilterSectionComponent";
+import Logout from "../Logout/Logout";
+import history from "../history";
 
 
 
@@ -36,7 +39,8 @@ class  Home extends PureComponent{
           checkConfirmDeletion: false,
           updatedWidgets: props.widgets||[],
           filteredWidgets:  props.widgets||[],
-          selectedFilter: []
+          selectedFilter: [],
+          confirmLogoutModal: false
         }
         this.onClickAddWidget = this.onClickAddWidget.bind(this);
         this.onClickModalClose = this.onClickModalClose.bind(this);
@@ -50,6 +54,8 @@ class  Home extends PureComponent{
         this.updateSearchString = this.updateSearchString.bind(this);
         this.updateFiltered = this.updateFiltered.bind(this);
         this.clearAll = this.clearAll.bind(this);
+        this.onClickLogout = this.onClickLogout.bind(this);
+        this.confirmLogout = this.confirmLogout.bind(this);
     }
 
     componentDidMount(){
@@ -72,7 +78,16 @@ class  Home extends PureComponent{
       this.setState({currWidgetId: id, checkConfirmDeletion: true});
     }
     onClickModalClose() {
-        this.props.closeWidgetModal();
+      this.props.closeWidgetModal();
+    }
+    onClickLogout(){
+      this.setState({confirmLogoutModal: true});
+    }
+    confirmLogout(){
+      this.props.requestLogout();
+      history.push({
+          pathname:"/"
+      }, ()=>{});
     }
     submitCreateWidget(obj) {
         this.props.createWidget(obj);
@@ -120,7 +135,7 @@ class  Home extends PureComponent{
     
     render(){
         const { widgets, addWidgetModal, editWidgetModal, isApprover} = this.props;
-        const {currWidgetId, checkConfirmDeletion, updatedWidgets, searchStr, selectedFilter, filteredWidgets}=this.state;
+        const {currWidgetId, checkConfirmDeletion, updatedWidgets, searchStr, selectedFilter, filteredWidgets, confirmLogoutModal}=this.state;
         const currWidget  = (currWidgetId!==-1 && editWidgetModal) ? widgets.find(e=>e._id===currWidgetId) : {};
         const currList =  searchStr ? updatedWidgets : selectedFilter.length>0 ? filteredWidgets : widgets;
         
@@ -133,6 +148,9 @@ class  Home extends PureComponent{
                       </div>
                       {!isApprover && <div className="col-3">
                         <ButtonComponent variant="contained" onClick={this.onClickAddWidget}>Add Widget</ButtonComponent>
+                        <nav className="nav"> 
+                            <span onClick={this.onClickLogout}>Logout</span>
+                        </nav>
                       </div>}
                     </div>
                 </div>
@@ -167,6 +185,9 @@ class  Home extends PureComponent{
                           </div>
                     </Modal>
                 }
+                {confirmLogoutModal &&
+                    <Logout confirmLogoutUser={this.confirmLogout}/>
+                }
                 
                 {(addWidgetModal || editWidgetModal) &&
                   <Modal 
@@ -200,7 +221,8 @@ Home.propTypes = {
     deleteWidget: PropTypes.func,
     rejectWidget: PropTypes.func,
     approveWidget: PropTypes.func,
-    publishWidget: PropTypes.func
+    publishWidget: PropTypes.func,
+    requestLogout: PropTypes.func
   };
   
 const mapStateToProps = (state) => {
@@ -224,7 +246,8 @@ const mapDispatchToProps = (dispatch) => {
         deleteWidget,
         approveWidget,
         publishWidget,
-        rejectWidget
+        rejectWidget,
+        requestLogout
       }, dispatch
     )
   )
